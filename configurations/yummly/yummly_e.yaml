@@ -1,0 +1,11 @@
+dataset:
+  name: YummlyTImg
+  raw_data_directory_name: /data/metric_learning/datasets/yummly_raw
+  data_directory_name: null
+  batch_size: 512
+
+preprocessing:
+  name: ResNetImagePreprocessing
+  image_size: 224
+
+subset_name: test

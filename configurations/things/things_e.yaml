@@ -1,0 +1,12 @@
+dataset:
+  name: ThingsTImg
+  raw_data_directory_name: /data/metric_learning/datasets/things_raw
+  data_directory_name: null
+  version: direct
+  batch_size: 512
+
+preprocessing:
+  name: ResNetImagePreprocessing
+  image_size: 224
+
+subset_name: test

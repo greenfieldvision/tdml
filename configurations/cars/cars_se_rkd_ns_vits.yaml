@@ -1,0 +1,32 @@
+run:
+  output_directory_name: modeling/runs
+  id: 26
+
+dataset:
+  name: CARSSEC
+  raw_data_directory_name: /data/metric_learning/datasets/cars_raw
+  data_directory_name: null
+  version: source_embedding_from_class_information
+  num_neighbors_per_instance: 1
+  batch_size: 284
+
+preprocessing:
+  name: ViTImagePreprocessing
+  image_size: 224
+
+model:
+  name: ViTS
+  num_nonlinearity_layers: 0
+  embedding_size: 384
+  loss_type: rkd
+  batch_mining: relaxed_sampling_matters
+  metric_mode: mP@1/max
+
+optimization:
+  optimizer_type: adamw
+  initial_learning_rate: 0.00001
+  weight_decay: 0.001
+  evaluate_globally: True
+  num_training_epochs: 100
+
+use_gpu: True

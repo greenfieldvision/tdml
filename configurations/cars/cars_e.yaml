@@ -1,0 +1,13 @@
+dataset:
+  name: CARSSEC
+  raw_data_directory_name: /data/metric_learning/datasets/cars_raw
+  data_directory_name: null
+  version: source_embedding_from_class_information
+  num_neighbors_per_instance: 1
+  batch_size: 512
+
+preprocessing:
+  name: ViTImagePreprocessing
+  image_size: 224
+
+subset_name: test
