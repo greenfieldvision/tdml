@@ -2,6 +2,7 @@ import numpy as np
 import torch
 
 
+# NOTE: parts of this class from Deep-Metric-Learning-Baselines/losses.py.
 class SamplingMattersBatchMiner:
     def __init__(self):
         self.lower_cutoff = 0.5
@@ -75,8 +76,7 @@ class SamplingMattersBatchMiner:
 
 class RelaxedSamplingMattersBatchMiner:
     def __init__(self, args):
-        # self.tau = 0.1  # -> virtually always select a positive in each triplet
-        self.tau = 0.4  # -> high chance of not selecting a positive in each triplet
+        self.tau = 0.4
 
         self.lower_cutoff = 0.5
         self.upper_cutoff = np.sqrt(2.0)
