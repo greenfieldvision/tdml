@@ -1,0 +1,312 @@
+1) new datasets, direct route
+# THINGS
+python tdml/train.py configuration_file_name=tdml/configurations/things/things_d_ste.yaml
+python tdml/train.py configuration_file_name=tdml/configurations/things/things_d_dm.yaml
+python tdml/train.py configuration_file_name=tdml/configurations/things/things_d_trip.yaml
+python tdml/train.py configuration_file_name=tdml/configurations/things/things_d_cont.yaml
+python tdml/train.py configuration_file_name=tdml/configurations/things/things_d_ms.yaml
+
+python tdml/evaluate.py configuration_file_name=tdml/configurations/things/things_e.yaml model_uri=ResNet50,embedding_size:128,frozen_variables:bn,num_nonlinearity_layers:0/modeling/runs/run-0101/checkpoint-best.pth evaluation_type=triplets
+
+
+# IHSJC
+python tdml/train.py configuration_file_name=tdml/configurations/ihsjc/ihsjc_d_ste.yaml
+python tdml/train.py configuration_file_name=tdml/configurations/ihsjc/ihsjc_d_dm.yaml
+python tdml/train.py configuration_file_name=tdml/configurations/ihsjc/ihsjc_d_trip.yaml
+python tdml/train.py configuration_file_name=tdml/configurations/ihsjc/ihsjc_d_cont.yaml
+python tdml/train.py configuration_file_name=tdml/configurations/ihsjc/ihsjc_d_ms.yaml
+
+python tdml/evaluate.py configuration_file_name=tdml/configurations/ihsjc/ihsjc_e.yaml model_uri=ResNet50,embedding_size:128,frozen_variables:bn,num_nonlinearity_layers:0/modeling/runs/run-0301/checkpoint-best.pth evaluation_type=triplets
+
+
+# YUMMLY
+python tdml/train.py configuration_file_name=tdml/configurations/yummly/yummly_d_ste.yaml num_repetitions=5
+python tdml/train.py configuration_file_name=tdml/configurations/yummly/yummly_d_dm.yaml num_repetitions=5
+python tdml/train.py configuration_file_name=tdml/configurations/yummly/yummly_d_trip.yaml num_repetitions=5
+python tdml/train.py configuration_file_name=tdml/configurations/yummly/yummly_d_cont.yaml num_repetitions=5
+python tdml/train.py configuration_file_name=tdml/configurations/yummly/yummly_d_ms.yaml num_repetitions=5
+
+python tdml/evaluate.py configuration_file_name=tdml/configurations/yummly/yummly_e.yaml model_uri=ResNet50,embedding_size:128,frozen_variables:bn,num_nonlinearity_layers:0/modeling/runs/run-0501/checkpoint-best.pth evaluation_type=triplets dataset.version=direct~0
+python tdml/evaluate.py configuration_file_name=tdml/configurations/yummly/yummly_e.yaml model_uri=ResNet50,embedding_size:128,frozen_variables:bn,num_nonlinearity_layers:0/modeling/runs/run-0502/checkpoint-best.pth evaluation_type=triplets dataset.version=direct~1
+python tdml/evaluate.py configuration_file_name=tdml/configurations/yummly/yummly_e.yaml model_uri=ResNet50,embedding_size:128,frozen_variables:bn,num_nonlinearity_layers:0/modeling/runs/run-0503/checkpoint-best.pth evaluation_type=triplets dataset.version=direct~2
+python tdml/evaluate.py configuration_file_name=tdml/configurations/yummly/yummly_e.yaml model_uri=ResNet50,embedding_size:128,frozen_variables:bn,num_nonlinearity_layers:0/modeling/runs/run-0504/checkpoint-best.pth evaluation_type=triplets dataset.version=direct~3
+python tdml/evaluate.py configuration_file_name=tdml/configurations/yummly/yummly_e.yaml model_uri=ResNet50,embedding_size:128,frozen_variables:bn,num_nonlinearity_layers:0/modeling/runs/run-0505/checkpoint-best.pth evaluation_type=triplets dataset.version=direct~4
+
+
+
+
+2) new datasets, teacher-student route
+# THINGS
+// psychological model (teacher)
+python tdml/train.py configuration_file_name=tdml/configurations/things/things_p_ste.yaml num_repetitions=5
+python tdml/train.py configuration_file_name=tdml/configurations/things/things_p_trip.yaml num_repetitions=5
+
+python tdml/train.py configuration_file_name=tdml/configurations/things/things_p_ste.yaml run.id=211 num_repetitions=50
+
+python tdml/train.py configuration_file_name=tdml/configurations/things/things_p_ste.yaml run.id=261 model.embedding_size=512 num_repetitions=5
+python tdml/train.py configuration_file_name=tdml/configurations/things/things_p_ste.yaml run.id=266 model.embedding_size=1024 num_repetitions=5
+
+python tdml/save_embeddings.py configuration_file_name=tdml/configurations/things/things_p_ste.yaml model_uris=Psycho,embedding_size:128,beta:0.0/modeling/runs/run-0111..0115/checkpoint-best.pth output_directory_name=modeling/intermediate/datasets/things_se new_source_embeddings_id=pt_ste5
+python tdml/save_embeddings.py configuration_file_name=tdml/configurations/things/things_p_ste.yaml model_uris=Psycho,embedding_size:128,beta:0.0/modeling/runs/run-0116..0120/checkpoint-best.pth output_directory_name=modeling/intermediate/datasets/things_se new_source_embeddings_id=pt_trip5
+
+python tdml/save_embeddings.py configuration_file_name=tdml/configurations/things/things_p_ste.yaml model_uris=Psycho,embedding_size:128,beta:0.0/modeling/runs/run-0211/checkpoint-best.pth output_directory_name=modeling/intermediate/datasets/things_se new_source_embeddings_id=pt_ste1
+python tdml/save_embeddings.py configuration_file_name=tdml/configurations/things/things_p_ste.yaml model_uris=Psycho,embedding_size:128,beta:0.0/modeling/runs/run-0211..0212/checkpoint-best.pth output_directory_name=modeling/intermediate/datasets/things_se new_source_embeddings_id=pt_ste2
+python tdml/save_embeddings.py configuration_file_name=tdml/configurations/things/things_p_ste.yaml model_uris=Psycho,embedding_size:128,beta:0.0/modeling/runs/run-0211..0220/checkpoint-best.pth output_directory_name=modeling/intermediate/datasets/things_se new_source_embeddings_id=pt_ste10
+python tdml/save_embeddings.py configuration_file_name=tdml/configurations/things/things_p_ste.yaml model_uris=Psycho,embedding_size:128,beta:0.0/modeling/runs/run-0211..0230/checkpoint-best.pth output_directory_name=modeling/intermediate/datasets/things_se new_source_embeddings_id=pt_ste20
+python tdml/save_embeddings.py configuration_file_name=tdml/configurations/things/things_p_ste.yaml model_uris=Psycho,embedding_size:128,beta:0.0/modeling/runs/run-0211..0260/checkpoint-best.pth output_directory_name=modeling/intermediate/datasets/things_se new_source_embeddings_id=pt_ste50
+
+python tdml/save_embeddings.py configuration_file_name=tdml/configurations/things/things_p_ste.yaml model_uris=Psycho,embedding_size:128,beta:0.0/modeling/runs/run-0261..0265/checkpoint-best.pth output_directory_name=modeling/intermediate/datasets/things_se new_source_embeddings_id=pt_ste5_e512
+python tdml/save_embeddings.py configuration_file_name=tdml/configurations/things/things_p_ste.yaml model_uris=Psycho,embedding_size:128,beta:0.0/modeling/runs/run-0266..0270/checkpoint-best.pth output_directory_name=modeling/intermediate/datasets/things_se new_source_embeddings_id=pt_ste5_e1024
+
+
+// source embedding supervised model (student)
+python tdml/train.py configuration_file_name=tdml/configurations/things/things_se_rkd.yaml num_repetitions=5
+python tdml/train.py configuration_file_name=tdml/configurations/things/things_se_rt.yaml num_repetitions=5
+python tdml/train.py configuration_file_name=tdml/configurations/things/things_se_rf.yaml num_repetitions=5
+python tdml/train.py configuration_file_name=tdml/configurations/things/things_se_mtt.yaml num_repetitions=5
+python tdml/train.py configuration_file_name=tdml/configurations/things/things_se_rc.yaml num_repetitions=5
+python tdml/train.py configuration_file_name=tdml/configurations/things/things_se_ri.yaml num_repetitions=5
+python tdml/train.py configuration_file_name=tdml/configurations/things/things_se_stmr.yam num_repetitions=5
+python tdml/train.py configuration_file_name=tdml/configurations/things/things_se_rms.yaml num_repetitions=5
+
+python tdml/train.py configuration_file_name=tdml/configurations/things/things_se_rkd_vit.yaml num_repetitions=5
+python tdml/train.py configuration_file_name=tdml/configurations/things/things_se_rt_vit.yaml num_repetitions=5
+python tdml/train.py configuration_file_name=tdml/configurations/things/things_se_rf_vit.yaml num_repetitions=5
+python tdml/train.py configuration_file_name=tdml/configurations/things/things_se_mtt_vit.yaml num_repetitions=5
+python tdml/train.py configuration_file_name=tdml/configurations/things/things_se_rc_vit.yaml num_repetitions=5
+python tdml/train.py configuration_file_name=tdml/configurations/things/things_se_ri_vit.yaml num_repetitions=5
+python tdml/train.py configuration_file_name=tdml/configurations/things/things_se_stmr_vit.yaml num_repetitions=5
+python tdml/train.py configuration_file_name=tdml/configurations/things/things_se_rms_vit.yaml num_repetitions=5
+
+python tdml/train.py configuration_file_name=tdml/configurations/things/things_se_rkd_inc.yaml num_repetitions=5
+
+python tdml/train.py configuration_file_name=tdml/configurations/things/things_se_rkd.yaml run.id=271 source_embeddings_id=pt_ste1 num_repetitions=5
+python tdml/train.py configuration_file_name=tdml/configurations/things/things_se_rkd.yaml run.id=275 source_embeddings_id=pt_ste10 num_repetitions=5
+python tdml/train.py configuration_file_name=tdml/configurations/things/things_se_rkd.yaml run.id=281 source_embeddings_id=pt_ste20 num_repetitions=5
+python tdml/train.py configuration_file_name=tdml/configurations/things/things_se_rkd.yaml run.id=286 source_embeddings_id=pt_ste50 num_repetitions=5
+
+python tdml/train.py configuration_file_name=tdml/configurations/things/things_se_rkd.yaml run.id=291 source_embeddings_id=pt_ste5_e512 dataset.batch_size=136 num_repetitions=5
+python tdml/train.py configuration_file_name=tdml/configurations/things/things_se_rkd.yaml run.id=296 source_embeddings_id=pt_ste2_e1024 dataset.batch_size=114 num_repetitions=5
+
+python tdml/evaluate.py configuration_file_name=tdml/configurations/things/things_e.yaml model_uri=ResNet50,embedding_size:128,frozen_variables:bn,num_nonlinearity_layers:0/modeling/runs/run-0121/checkpoint-best.pth evaluation_type=triplets
+python tdml/evaluate.py configuration_file_name=tdml/configurations/things/things_e.yaml model_uri=ResNet50,embedding_size:128,frozen_variables:bn,num_nonlinearity_layers:0/modeling/runs/run-0122/checkpoint-best.pth evaluation_type=triplets
+python tdml/evaluate.py configuration_file_name=tdml/configurations/things/things_e.yaml model_uri=ResNet50,embedding_size:128,frozen_variables:bn,num_nonlinearity_layers:0/modeling/runs/run-0123/checkpoint-best.pth evaluation_type=triplets
+python tdml/evaluate.py configuration_file_name=tdml/configurations/things/things_e.yaml model_uri=ResNet50,embedding_size:128,frozen_variables:bn,num_nonlinearity_layers:0/modeling/runs/run-0124/checkpoint-best.pth evaluation_type=triplets
+python tdml/evaluate.py configuration_file_name=tdml/configurations/things/things_e.yaml model_uri=ResNet50,embedding_size:128,frozen_variables:bn,num_nonlinearity_layers:0/modeling/runs/run-0125/checkpoint-best.pth evaluation_type=triplets
+
+
+
+# IHJSC
+// psychological model (teacher)
+python tdml/train.py configuration_file_name=tdml/configurations/ihsjc/ihsjc_p_ste.yaml num_repetitions=5
+python tdml/train.py configuration_file_name=tdml/configurations/ihsjc/ihsjc_p_trip.yaml num_repetitions=5
+
+python tdml/train.py configuration_file_name=tdml/configurations/ihsjc/ihsjc_p_ste.yaml run.id=411 num_repetitions=50
+
+python tdml/train.py configuration_file_name=tdml/configurations/ihsjc/ihsjc_p_ste.yaml run.id=461 model.embedding_size=512 num_repetitions=5
+python tdml/train.py configuration_file_name=tdml/configurations/ihsjc/ihsjc_p_ste.yaml run.id=466 model.embedding_size=1024 num_repetitions=5
+
+python tdml/save_embeddings.py configuration_file_name=tdml/configurations/ihsjc/ihsjc_p_ste.yaml model_uris=Psycho,embedding_size:128,beta:0.0/modeling/runs/run-0311..0315/checkpoint-best.pth output_directory_name=modeling/intermediate/datasets/ihsjc_se new_source_embeddings_id=pt_ste5
+python tdml/save_embeddings.py configuration_file_name=tdml/configurations/ihsjc/ihsjc_p_ste.yaml model_uris=Psycho,embedding_size:128,beta:0.0/modeling/runs/run-0316..0320/checkpoint-best.pth output_directory_name=modeling/intermediate/datasets/ihsjc_se new_source_embeddings_id=pt_trip5
+
+python tdml/save_embeddings.py configuration_file_name=tdml/configurations/ihsjc/ihsjc_p_ste.yaml model_uris=Psycho,embedding_size:128,beta:0.0/modeling/runs/run-0411/checkpoint-best.pth output_directory_name=modeling/intermediate/datasets/ihsjc_se new_source_embeddings_id=pt_ste1
+python tdml/save_embeddings.py configuration_file_name=tdml/configurations/ihsjc/ihsjc_p_ste.yaml model_uris=Psycho,embedding_size:128,beta:0.0/modeling/runs/run-0411..0412/checkpoint-best.pth output_directory_name=modeling/intermediate/datasets/ihsjc_se new_source_embeddings_id=pt_ste2
+python tdml/save_embeddings.py configuration_file_name=tdml/configurations/ihsjc/ihsjc_p_ste.yaml model_uris=Psycho,embedding_size:128,beta:0.0/modeling/runs/run-0411..0420/checkpoint-best.pth output_directory_name=modeling/intermediate/datasets/ihsjc_se new_source_embeddings_id=pt_ste10
+python tdml/save_embeddings.py configuration_file_name=tdml/configurations/ihsjc/ihsjc_p_ste.yaml model_uris=Psycho,embedding_size:128,beta:0.0/modeling/runs/run-0411..0430/checkpoint-best.pth output_directory_name=modeling/intermediate/datasets/ihsjc_se new_source_embeddings_id=pt_ste20
+python tdml/save_embeddings.py configuration_file_name=tdml/configurations/ihsjc/ihsjc_p_ste.yaml model_uris=Psycho,embedding_size:128,beta:0.0/modeling/runs/run-0411..0460/checkpoint-best.pth output_directory_name=modeling/intermediate/datasets/ihsjc_se new_source_embeddings_id=pt_ste50
+
+python tdml/save_embeddings.py configuration_file_name=tdml/configurations/ihsjc/ihsjc_p_ste.yaml model_uris=Psycho,embedding_size:128,beta:0.0/modeling/runs/run-0461..0465/checkpoint-best.pth output_directory_name=modeling/intermediate/datasets/ihsjc_se new_source_embeddings_id=pt_ste5_e512
+python tdml/save_embeddings.py configuration_file_name=tdml/configurations/ihsjc/ihsjc_p_ste.yaml model_uris=Psycho,embedding_size:128,beta:0.0/modeling/runs/run-0466..0470/checkpoint-best.pth output_directory_name=modeling/intermediate/datasets/ihsjc_se new_source_embeddings_id=pt_ste5_e1024
+
+
+// source embedding supervised model (student)
+python tdml/train.py configuration_file_name=tdml/configurations/ihsjc/ihsjc_se_rkd.yaml num_repetitions=5
+python tdml/train.py configuration_file_name=tdml/configurations/ihsjc/ihsjc_se_rt.yaml num_repetitions=5
+python tdml/train.py configuration_file_name=tdml/configurations/ihsjc/ihsjc_se_rf.yaml num_repetitions=5
+python tdml/train.py configuration_file_name=tdml/configurations/ihsjc/ihsjc_se_mtt.yaml num_repetitions=5
+python tdml/train.py configuration_file_name=tdml/configurations/ihsjc/ihsjc_se_rc.yaml num_repetitions=5
+python tdml/train.py configuration_file_name=tdml/configurations/ihsjc/ihsjc_se_ri.yaml num_repetitions=5
+python tdml/train.py configuration_file_name=tdml/configurations/ihsjc/ihsjc_se_stmr.yam num_repetitions=5
+python tdml/train.py configuration_file_name=tdml/configurations/ihsjc/ihsjc_se_rms.yaml num_repetitions=5
+
+python tdml/train.py configuration_file_name=tdml/configurations/ihsjc/ihsjc_se_rkd_vit.yaml num_repetitions=5
+python tdml/train.py configuration_file_name=tdml/configurations/ihsjc/ihsjc_se_rt_vit.yaml num_repetitions=5
+python tdml/train.py configuration_file_name=tdml/configurations/ihsjc/ihsjc_se_rf_vit.yaml num_repetitions=5
+python tdml/train.py configuration_file_name=tdml/configurations/ihsjc/ihsjc_se_mtt_vit.yaml num_repetitions=5
+python tdml/train.py configuration_file_name=tdml/configurations/ihsjc/ihsjc_se_rc_vit.yaml num_repetitions=5
+python tdml/train.py configuration_file_name=tdml/configurations/ihsjc/ihsjc_se_ri_vit.yaml num_repetitions=5
+python tdml/train.py configuration_file_name=tdml/configurations/ihsjc/ihsjc_se_stmr_vit.yaml num_repetitions=5
+python tdml/train.py configuration_file_name=tdml/configurations/ihsjc/ihsjc_se_rms_vit.yaml num_repetitions=5
+
+python tdml/train.py configuration_file_name=tdml/configurations/ihsjc/ihsjc_se_rkd_inc.yaml num_repetitions=5
+
+python tdml/train.py configuration_file_name=tdml/configurations/ihsjc/ihsjc_se_rkd.yaml run.id=471 source_embeddings_id=pt_ste1 num_repetitions=5
+python tdml/train.py configuration_file_name=tdml/configurations/ihsjc/ihsjc_se_rkd.yaml run.id=475 source_embeddings_id=pt_ste10 num_repetitions=5
+python tdml/train.py configuration_file_name=tdml/configurations/ihsjc/ihsjc_se_rkd.yaml run.id=481 source_embeddings_id=pt_ste20 num_repetitions=5
+python tdml/train.py configuration_file_name=tdml/configurations/ihsjc/ihsjc_se_rkd.yaml run.id=486 source_embeddings_id=pt_ste50 num_repetitions=5
+
+python tdml/train.py configuration_file_name=tdml/configurations/ihsjc/ihsjc_se_rkd.yaml run.id=491 source_embeddings_id=pt_ste5_e512 dataset.batch_size=136 num_repetitions=5
+python tdml/train.py configuration_file_name=tdml/configurations/ihsjc/ihsjc_se_rkd.yaml run.id=496 source_embeddings_id=pt_ste2_e1024 dataset.batch_size=114 num_repetitions=5
+
+python tdml/evaluate.py configuration_file_name=tdml/configurations/ihsjc/ihsjc_e.yaml model_uri=ResNet50,embedding_size:128,frozen_variables:bn,num_nonlinearity_layers:0/modeling/runs/run-0321/checkpoint-best.pth evaluation_type=triplets
+python tdml/evaluate.py configuration_file_name=tdml/configurations/ihsjc/ihsjc_e.yaml model_uri=ResNet50,embedding_size:128,frozen_variables:bn,num_nonlinearity_layers:0/modeling/runs/run-0322/checkpoint-best.pth evaluation_type=triplets
+python tdml/evaluate.py configuration_file_name=tdml/configurations/ihsjc/ihsjc_e.yaml model_uri=ResNet50,embedding_size:128,frozen_variables:bn,num_nonlinearity_layers:0/modeling/runs/run-0323/checkpoint-best.pth evaluation_type=triplets
+python tdml/evaluate.py configuration_file_name=tdml/configurations/ihsjc/ihsjc_e.yaml model_uri=ResNet50,embedding_size:128,frozen_variables:bn,num_nonlinearity_layers:0/modeling/runs/run-0324/checkpoint-best.pth evaluation_type=triplets
+python tdml/evaluate.py configuration_file_name=tdml/configurations/ihsjc/ihsjc_e.yaml model_uri=ResNet50,embedding_size:128,frozen_variables:bn,num_nonlinearity_layers:0/modeling/runs/run-0325/checkpoint-best.pth evaluation_type=triplets
+
+
+
+# YUMMLY
+// psychological model (teacher)
+python tdml/train.py configuration_file_name=tdml/configurations/yummly/yummly_p_ste.yaml run.id=531 dataset.version=direct~0 num_repetitions=5
+python tdml/train.py configuration_file_name=tdml/configurations/yummly/yummly_p_ste.yaml run.id=536 dataset.version=direct~1 num_repetitions=5
+python tdml/train.py configuration_file_name=tdml/configurations/yummly/yummly_p_ste.yaml run.id=541 dataset.version=direct~2 num_repetitions=5
+python tdml/train.py configuration_file_name=tdml/configurations/yummly/yummly_p_ste.yaml run.id=546 dataset.version=direct~3 num_repetitions=5
+python tdml/train.py configuration_file_name=tdml/configurations/yummly/yummly_p_ste.yaml run.id=551 dataset.version=direct~4 num_repetitions=5
+
+python tdml/train.py configuration_file_name=tdml/configurations/yummly/yummly_p_trip.yaml run.id=556 dataset.version=direct~0 num_repetitions=5
+python tdml/train.py configuration_file_name=tdml/configurations/yummly/yummly_p_trip.yaml run.id=561 dataset.version=direct~1 num_repetitions=5
+python tdml/train.py configuration_file_name=tdml/configurations/yummly/yummly_p_trip.yaml run.id=566 dataset.version=direct~2 num_repetitions=5
+python tdml/train.py configuration_file_name=tdml/configurations/yummly/yummly_p_trip.yaml run.id=571 dataset.version=direct~3 num_repetitions=5
+python tdml/train.py configuration_file_name=tdml/configurations/yummly/yummly_p_trip.yaml run.id=576 dataset.version=direct~4 num_repetitions=5
+
+python tdml/train.py configuration_file_name=tdml/configurations/yummly/yummly_p_ste.yaml run.id=671 dataset.version=direct~0 num_repetitions=50
+python tdml/train.py configuration_file_name=tdml/configurations/yummly/yummly_p_ste.yaml run.id=721 dataset.version=direct~1 num_repetitions=50
+python tdml/train.py configuration_file_name=tdml/configurations/yummly/yummly_p_ste.yaml run.id=771 dataset.version=direct~2 num_repetitions=50
+python tdml/train.py configuration_file_name=tdml/configurations/yummly/yummly_p_ste.yaml run.id=821 dataset.version=direct~3 num_repetitions=50
+python tdml/train.py configuration_file_name=tdml/configurations/yummly/yummly_p_ste.yaml run.id=871 dataset.version=direct~4 num_repetitions=50
+
+python tdml/train.py configuration_file_name=tdml/configurations/yummly/yummly_p_ste.yaml run.id=921 dataset.version=direct~0 model.embedding_size=512 num_repetitions=5
+python tdml/train.py configuration_file_name=tdml/configurations/yummly/yummly_p_ste.yaml run.id=926 dataset.version=direct~1 model.embedding_size=512 num_repetitions=5
+python tdml/train.py configuration_file_name=tdml/configurations/yummly/yummly_p_ste.yaml run.id=931 dataset.version=direct~2 model.embedding_size=512 num_repetitions=5
+python tdml/train.py configuration_file_name=tdml/configurations/yummly/yummly_p_ste.yaml run.id=936 dataset.version=direct~3 model.embedding_size=512 num_repetitions=5
+python tdml/train.py configuration_file_name=tdml/configurations/yummly/yummly_p_ste.yaml run.id=941 dataset.version=direct~4 model.embedding_size=512 num_repetitions=5
+
+python tdml/train.py configuration_file_name=tdml/configurations/yummly/yummly_p_ste.yaml run.id=946 dataset.version=direct~0 model.embedding_size=1024 num_repetitions=5
+python tdml/train.py configuration_file_name=tdml/configurations/yummly/yummly_p_ste.yaml run.id=951 dataset.version=direct~0 model.embedding_size=1024 num_repetitions=5
+python tdml/train.py configuration_file_name=tdml/configurations/yummly/yummly_p_ste.yaml run.id=956 dataset.version=direct~0 model.embedding_size=1024 num_repetitions=5
+python tdml/train.py configuration_file_name=tdml/configurations/yummly/yummly_p_ste.yaml run.id=961 dataset.version=direct~0 model.embedding_size=1024 num_repetitions=5
+python tdml/train.py configuration_file_name=tdml/configurations/yummly/yummly_p_ste.yaml run.id=966 dataset.version=direct~0 model.embedding_size=1024 num_repetitions=5
+
+python tdml/save_embeddings.py configuration_file_name=tdml/configurations/yummly/yummly_p_ste.yaml model_uris=Psycho,embedding_size:128,beta:0.0/modeling/runs/run-0531..0535/checkpoint-best.pth output_directory_name=modeling/intermediate/datasets/yummly_se new_source_embeddings_id=pt_ste5~0
+python tdml/save_embeddings.py configuration_file_name=tdml/configurations/yummly/yummly_p_ste.yaml model_uris=Psycho,embedding_size:128,beta:0.0/modeling/runs/run-0536..0540/checkpoint-best.pth output_directory_name=modeling/intermediate/datasets/yummly_se new_source_embeddings_id=pt_ste5~1
+python tdml/save_embeddings.py configuration_file_name=tdml/configurations/yummly/yummly_p_ste.yaml model_uris=Psycho,embedding_size:128,beta:0.0/modeling/runs/run-0541..0545/checkpoint-best.pth output_directory_name=modeling/intermediate/datasets/yummly_se new_source_embeddings_id=pt_ste5~2
+python tdml/save_embeddings.py configuration_file_name=tdml/configurations/yummly/yummly_p_ste.yaml model_uris=Psycho,embedding_size:128,beta:0.0/modeling/runs/run-0546..0550/checkpoint-best.pth output_directory_name=modeling/intermediate/datasets/yummly_se new_source_embeddings_id=pt_ste5~3
+python tdml/save_embeddings.py configuration_file_name=tdml/configurations/yummly/yummly_p_ste.yaml model_uris=Psycho,embedding_size:128,beta:0.0/modeling/runs/run-0551..0555/checkpoint-best.pth output_directory_name=modeling/intermediate/datasets/yummly_se new_source_embeddings_id=pt_ste5~4
+
+python tdml/save_embeddings.py configuration_file_name=tdml/configurations/yummly/yummly_p_ste.yaml model_uris=Psycho,embedding_size:128,beta:0.0/modeling/runs/run-0556..0560/checkpoint-best.pth output_directory_name=modeling/intermediate/datasets/yummly_se new_source_embeddings_id=pt_trip5~0
+python tdml/save_embeddings.py configuration_file_name=tdml/configurations/yummly/yummly_p_ste.yaml model_uris=Psycho,embedding_size:128,beta:0.0/modeling/runs/run-0561..0565/checkpoint-best.pth output_directory_name=modeling/intermediate/datasets/yummly_se new_source_embeddings_id=pt_trip5~1
+python tdml/save_embeddings.py configuration_file_name=tdml/configurations/yummly/yummly_p_ste.yaml model_uris=Psycho,embedding_size:128,beta:0.0/modeling/runs/run-0566..0570/checkpoint-best.pth output_directory_name=modeling/intermediate/datasets/yummly_se new_source_embeddings_id=pt_trip5~2
+python tdml/save_embeddings.py configuration_file_name=tdml/configurations/yummly/yummly_p_ste.yaml model_uris=Psycho,embedding_size:128,beta:0.0/modeling/runs/run-0571..0575/checkpoint-best.pth output_directory_name=modeling/intermediate/datasets/yummly_se new_source_embeddings_id=pt_trip5~3
+python tdml/save_embeddings.py configuration_file_name=tdml/configurations/yummly/yummly_p_ste.yaml model_uris=Psycho,embedding_size:128,beta:0.0/modeling/runs/run-0576..0580/checkpoint-best.pth output_directory_name=modeling/intermediate/datasets/yummly_se new_source_embeddings_id=pt_trip5~4
+
+python tdml/save_embeddings.py configuration_file_name=tdml/configurations/yummly/yummly_p_ste.yaml model_uris=Psycho,embedding_size:128,beta:0.0/modeling/runs/run-0671/checkpoint-best.pth output_directory_name=modeling/intermediate/datasets/yummly_se new_source_embeddings_id=pt_ste1~0
+python tdml/save_embeddings.py configuration_file_name=tdml/configurations/yummly/yummly_p_ste.yaml model_uris=Psycho,embedding_size:128,beta:0.0/modeling/runs/run-0721/checkpoint-best.pth output_directory_name=modeling/intermediate/datasets/yummly_se new_source_embeddings_id=pt_ste1~1
+python tdml/save_embeddings.py configuration_file_name=tdml/configurations/yummly/yummly_p_ste.yaml model_uris=Psycho,embedding_size:128,beta:0.0/modeling/runs/run-0771/checkpoint-best.pth output_directory_name=modeling/intermediate/datasets/yummly_se new_source_embeddings_id=pt_ste1~2
+python tdml/save_embeddings.py configuration_file_name=tdml/configurations/yummly/yummly_p_ste.yaml model_uris=Psycho,embedding_size:128,beta:0.0/modeling/runs/run-0821/checkpoint-best.pth output_directory_name=modeling/intermediate/datasets/yummly_se new_source_embeddings_id=pt_ste1~3
+python tdml/save_embeddings.py configuration_file_name=tdml/configurations/yummly/yummly_p_ste.yaml model_uris=Psycho,embedding_size:128,beta:0.0/modeling/runs/run-0871/checkpoint-best.pth output_directory_name=modeling/intermediate/datasets/yummly_se new_source_embeddings_id=pt_ste1~4
+
+python tdml/save_embeddings.py configuration_file_name=tdml/configurations/yummly/yummly_p_ste.yaml model_uris=Psycho,embedding_size:128,beta:0.0/modeling/runs/run-0671..0672/checkpoint-best.pth output_directory_name=modeling/intermediate/datasets/yummly_se new_source_embeddings_id=pt_ste2~0
+python tdml/save_embeddings.py configuration_file_name=tdml/configurations/yummly/yummly_p_ste.yaml model_uris=Psycho,embedding_size:128,beta:0.0/modeling/runs/run-0721..0722/checkpoint-best.pth output_directory_name=modeling/intermediate/datasets/yummly_se new_source_embeddings_id=pt_ste2~1
+python tdml/save_embeddings.py configuration_file_name=tdml/configurations/yummly/yummly_p_ste.yaml model_uris=Psycho,embedding_size:128,beta:0.0/modeling/runs/run-0771..0772/checkpoint-best.pth output_directory_name=modeling/intermediate/datasets/yummly_se new_source_embeddings_id=pt_ste2~2
+python tdml/save_embeddings.py configuration_file_name=tdml/configurations/yummly/yummly_p_ste.yaml model_uris=Psycho,embedding_size:128,beta:0.0/modeling/runs/run-0821..0822/checkpoint-best.pth output_directory_name=modeling/intermediate/datasets/yummly_se new_source_embeddings_id=pt_ste2~3
+python tdml/save_embeddings.py configuration_file_name=tdml/configurations/yummly/yummly_p_ste.yaml model_uris=Psycho,embedding_size:128,beta:0.0/modeling/runs/run-0871..0872/checkpoint-best.pth output_directory_name=modeling/intermediate/datasets/yummly_se new_source_embeddings_id=pt_ste2~4
+
+python tdml/save_embeddings.py configuration_file_name=tdml/configurations/yummly/yummly_p_ste.yaml model_uris=Psycho,embedding_size:128,beta:0.0/modeling/runs/run-0671..0680/checkpoint-best.pth output_directory_name=modeling/intermediate/datasets/yummly_se new_source_embeddings_id=pt_ste10~0
+python tdml/save_embeddings.py configuration_file_name=tdml/configurations/yummly/yummly_p_ste.yaml model_uris=Psycho,embedding_size:128,beta:0.0/modeling/runs/run-0721..0730/checkpoint-best.pth output_directory_name=modeling/intermediate/datasets/yummly_se new_source_embeddings_id=pt_ste10~1
+python tdml/save_embeddings.py configuration_file_name=tdml/configurations/yummly/yummly_p_ste.yaml model_uris=Psycho,embedding_size:128,beta:0.0/modeling/runs/run-0771..0780/checkpoint-best.pth output_directory_name=modeling/intermediate/datasets/yummly_se new_source_embeddings_id=pt_ste10~2
+python tdml/save_embeddings.py configuration_file_name=tdml/configurations/yummly/yummly_p_ste.yaml model_uris=Psycho,embedding_size:128,beta:0.0/modeling/runs/run-0821..0830/checkpoint-best.pth output_directory_name=modeling/intermediate/datasets/yummly_se new_source_embeddings_id=pt_ste10~3
+python tdml/save_embeddings.py configuration_file_name=tdml/configurations/yummly/yummly_p_ste.yaml model_uris=Psycho,embedding_size:128,beta:0.0/modeling/runs/run-0871..0880/checkpoint-best.pth output_directory_name=modeling/intermediate/datasets/yummly_se new_source_embeddings_id=pt_ste10~4
+
+python tdml/save_embeddings.py configuration_file_name=tdml/configurations/yummly/yummly_p_ste.yaml model_uris=Psycho,embedding_size:128,beta:0.0/modeling/runs/run-0671..0690/checkpoint-best.pth output_directory_name=modeling/intermediate/datasets/yummly_se new_source_embeddings_id=pt_ste20~0
+python tdml/save_embeddings.py configuration_file_name=tdml/configurations/yummly/yummly_p_ste.yaml model_uris=Psycho,embedding_size:128,beta:0.0/modeling/runs/run-0721..0740/checkpoint-best.pth output_directory_name=modeling/intermediate/datasets/yummly_se new_source_embeddings_id=pt_ste20~1
+python tdml/save_embeddings.py configuration_file_name=tdml/configurations/yummly/yummly_p_ste.yaml model_uris=Psycho,embedding_size:128,beta:0.0/modeling/runs/run-0771..0790/checkpoint-best.pth output_directory_name=modeling/intermediate/datasets/yummly_se new_source_embeddings_id=pt_ste20~2
+python tdml/save_embeddings.py configuration_file_name=tdml/configurations/yummly/yummly_p_ste.yaml model_uris=Psycho,embedding_size:128,beta:0.0/modeling/runs/run-0821..0840/checkpoint-best.pth output_directory_name=modeling/intermediate/datasets/yummly_se new_source_embeddings_id=pt_ste20~3
+python tdml/save_embeddings.py configuration_file_name=tdml/configurations/yummly/yummly_p_ste.yaml model_uris=Psycho,embedding_size:128,beta:0.0/modeling/runs/run-0871..0890/checkpoint-best.pth output_directory_name=modeling/intermediate/datasets/yummly_se new_source_embeddings_id=pt_ste20~4
+
+python tdml/save_embeddings.py configuration_file_name=tdml/configurations/yummly/yummly_p_ste.yaml model_uris=Psycho,embedding_size:128,beta:0.0/modeling/runs/run-0671..0720/checkpoint-best.pth output_directory_name=modeling/intermediate/datasets/yummly_se new_source_embeddings_id=pt_ste50~0
+python tdml/save_embeddings.py configuration_file_name=tdml/configurations/yummly/yummly_p_ste.yaml model_uris=Psycho,embedding_size:128,beta:0.0/modeling/runs/run-0721..0770/checkpoint-best.pth output_directory_name=modeling/intermediate/datasets/yummly_se new_source_embeddings_id=pt_ste50~1
+python tdml/save_embeddings.py configuration_file_name=tdml/configurations/yummly/yummly_p_ste.yaml model_uris=Psycho,embedding_size:128,beta:0.0/modeling/runs/run-0771..0820/checkpoint-best.pth output_directory_name=modeling/intermediate/datasets/yummly_se new_source_embeddings_id=pt_ste50~2
+python tdml/save_embeddings.py configuration_file_name=tdml/configurations/yummly/yummly_p_ste.yaml model_uris=Psycho,embedding_size:128,beta:0.0/modeling/runs/run-0821..0870/checkpoint-best.pth output_directory_name=modeling/intermediate/datasets/yummly_se new_source_embeddings_id=pt_ste50~3
+python tdml/save_embeddings.py configuration_file_name=tdml/configurations/yummly/yummly_p_ste.yaml model_uris=Psycho,embedding_size:128,beta:0.0/modeling/runs/run-0871..0920/checkpoint-best.pth output_directory_name=modeling/intermediate/datasets/yummly_se new_source_embeddings_id=pt_ste50~4
+
+python tdml/save_embeddings.py configuration_file_name=tdml/configurations/yummly/yummly_p_ste.yaml model_uris=Psycho,embedding_size:128,beta:0.0/modeling/runs/run-0921..0925/checkpoint-best.pth output_directory_name=modeling/intermediate/datasets/yummly_se new_source_embeddings_id=pt_ste5_e512~0
+python tdml/save_embeddings.py configuration_file_name=tdml/configurations/yummly/yummly_p_ste.yaml model_uris=Psycho,embedding_size:128,beta:0.0/modeling/runs/run-0926..0930/checkpoint-best.pth output_directory_name=modeling/intermediate/datasets/yummly_se new_source_embeddings_id=pt_ste5_e512~1
+python tdml/save_embeddings.py configuration_file_name=tdml/configurations/yummly/yummly_p_ste.yaml model_uris=Psycho,embedding_size:128,beta:0.0/modeling/runs/run-0931..0935/checkpoint-best.pth output_directory_name=modeling/intermediate/datasets/yummly_se new_source_embeddings_id=pt_ste5_e512~2
+python tdml/save_embeddings.py configuration_file_name=tdml/configurations/yummly/yummly_p_ste.yaml model_uris=Psycho,embedding_size:128,beta:0.0/modeling/runs/run-0936..0940/checkpoint-best.pth output_directory_name=modeling/intermediate/datasets/yummly_se new_source_embeddings_id=pt_ste5_e512~3
+python tdml/save_embeddings.py configuration_file_name=tdml/configurations/yummly/yummly_p_ste.yaml model_uris=Psycho,embedding_size:128,beta:0.0/modeling/runs/run-0941..0945/checkpoint-best.pth output_directory_name=modeling/intermediate/datasets/yummly_se new_source_embeddings_id=pt_ste5_e512~4
+
+python tdml/save_embeddings.py configuration_file_name=tdml/configurations/yummly/yummly_p_ste.yaml model_uris=Psycho,embedding_size:128,beta:0.0/modeling/runs/run-0946..0950/checkpoint-best.pth output_directory_name=modeling/intermediate/datasets/yummly_se new_source_embeddings_id=pt_ste5_e1024~0
+python tdml/save_embeddings.py configuration_file_name=tdml/configurations/yummly/yummly_p_ste.yaml model_uris=Psycho,embedding_size:128,beta:0.0/modeling/runs/run-0951..0955/checkpoint-best.pth output_directory_name=modeling/intermediate/datasets/yummly_se new_source_embeddings_id=pt_ste5_e1024~1
+python tdml/save_embeddings.py configuration_file_name=tdml/configurations/yummly/yummly_p_ste.yaml model_uris=Psycho,embedding_size:128,beta:0.0/modeling/runs/run-0956..0960/checkpoint-best.pth output_directory_name=modeling/intermediate/datasets/yummly_se new_source_embeddings_id=pt_ste5_e1024~2
+python tdml/save_embeddings.py configuration_file_name=tdml/configurations/yummly/yummly_p_ste.yaml model_uris=Psycho,embedding_size:128,beta:0.0/modeling/runs/run-0961..0965/checkpoint-best.pth output_directory_name=modeling/intermediate/datasets/yummly_se new_source_embeddings_id=pt_ste5_e1024~3
+python tdml/save_embeddings.py configuration_file_name=tdml/configurations/yummly/yummly_p_ste.yaml model_uris=Psycho,embedding_size:128,beta:0.0/modeling/runs/run-0966..0970/checkpoint-best.pth output_directory_name=modeling/intermediate/datasets/yummly_se new_source_embeddings_id=pt_ste5_e1024~4
+
+
+// source embedding supervised model (student)
+python tdml/train.py configuration_file_name=tdml/configurations/yummly/yummly_se_rkd.yaml num_repetitions=5
+python tdml/train.py configuration_file_name=tdml/configurations/yummly/yummly_se_rt.yaml num_repetitions=5
+python tdml/train.py configuration_file_name=tdml/configurations/yummly/yummly_se_rf.yaml num_repetitions=5
+python tdml/train.py configuration_file_name=tdml/configurations/yummly/yummly_se_mtt.yaml num_repetitions=5
+python tdml/train.py configuration_file_name=tdml/configurations/yummly/yummly_se_rc.yaml num_repetitions=5
+python tdml/train.py configuration_file_name=tdml/configurations/yummly/yummly_se_ri.yaml num_repetitions=5
+python tdml/train.py configuration_file_name=tdml/configurations/yummly/yummly_se_stmr.yam num_repetitions=5
+python tdml/train.py configuration_file_name=tdml/configurations/yummly/yummly_se_rms.yaml num_repetitions=5
+
+python tdml/train.py configuration_file_name=tdml/configurations/yummly/yummly_se_rkd_vit.yaml num_repetitions=5
+python tdml/train.py configuration_file_name=tdml/configurations/yummly/yummly_se_rt_vit.yaml num_repetitions=5
+python tdml/train.py configuration_file_name=tdml/configurations/yummly/yummly_se_rf_vit.yaml num_repetitions=5
+python tdml/train.py configuration_file_name=tdml/configurations/yummly/yummly_se_mtt_vit.yaml num_repetitions=5
+python tdml/train.py configuration_file_name=tdml/configurations/yummly/yummly_se_rc_vit.yaml num_repetitions=5
+python tdml/train.py configuration_file_name=tdml/configurations/yummly/yummly_se_ri_vit.yaml num_repetitions=5
+python tdml/train.py configuration_file_name=tdml/configurations/yummly/yummly_se_stmr_vit.yaml num_repetitions=5
+python tdml/train.py configuration_file_name=tdml/configurations/yummly/yummly_se_rms_vit.yaml num_repetitions=5
+
+python tdml/train.py configuration_file_name=tdml/configurations/yummly/yummly_se_rkd_inc.yaml num_repetitions=5
+
+python tdml/train.py configuration_file_name=tdml/configurations/yummly/yummly_se_rkd.yaml run.id=971 source_embeddings_id=pt_ste1 num_repetitions=5
+python tdml/train.py configuration_file_name=tdml/configurations/yummly/yummly_se_rkd.yaml run.id=976 source_embeddings_id=pt_ste10 num_repetitions=5
+python tdml/train.py configuration_file_name=tdml/configurations/yummly/yummly_se_rkd.yaml run.id=981 source_embeddings_id=pt_ste20 num_repetitions=5
+python tdml/train.py configuration_file_name=tdml/configurations/yummly/yummly_se_rkd.yaml run.id=986 source_embeddings_id=pt_ste50 num_repetitions=5
+
+python tdml/train.py configuration_file_name=tdml/configurations/yummly/yummly_se_rkd.yaml run.id=991 source_embeddings_id=pt_ste5_e512 dataset.batch_size=136 num_repetitions=5
+python tdml/train.py configuration_file_name=tdml/configurations/yummly/yummly_se_rkd.yaml run.id=996 source_embeddings_id=pt_ste2_e1024 dataset.batch_size=114 num_repetitions=5
+
+python tdml/evaluate.py configuration_file_name=tdml/configurations/yummly/yummly_e.yaml model_uri=ResNet50,embedding_size:128,frozen_variables:bn,num_nonlinearity_layers:0/modeling/runs/run-0581/checkpoint-best.pth dataset.version=direct~0 evaluation_type=triplets
+python tdml/evaluate.py configuration_file_name=tdml/configurations/yummly/yummly_e.yaml model_uri=ResNet50,embedding_size:128,frozen_variables:bn,num_nonlinearity_layers:0/modeling/runs/run-0582/checkpoint-best.pth dataset.version=direct~1 evaluation_type=triplets
+python tdml/evaluate.py configuration_file_name=tdml/configurations/yummly/yummly_e.yaml model_uri=ResNet50,embedding_size:128,frozen_variables:bn,num_nonlinearity_layers:0/modeling/runs/run-0583/checkpoint-best.pth dataset.version=direct~2 evaluation_type=triplets
+python tdml/evaluate.py configuration_file_name=tdml/configurations/yummly/yummly_e.yaml model_uri=ResNet50,embedding_size:128,frozen_variables:bn,num_nonlinearity_layers:0/modeling/runs/run-0584/checkpoint-best.pth dataset.version=direct~3 evaluation_type=triplets
+python tdml/evaluate.py configuration_file_name=tdml/configurations/yummly/yummly_e.yaml model_uri=ResNet50,embedding_size:128,frozen_variables:bn,num_nonlinearity_layers:0/modeling/runs/run-0585/checkpoint-best.pth dataset.version=direct~4 evaluation_type=triplets
+
+
+
+
+3) old datasets
+# CUB
+python tdml/train.py configuration_file_name=tdml/configurations/cub/cub_se_rkd_ns_vits.yaml
+python tdml/train.py configuration_file_name=tdml/configurations/cub/cub_se_stmr_ns_vits.yaml
+
+python tdml/evaluate.py configuration_file_name=tdml/configurations/cub/cub_e.yaml model_uri=ViTS,embedding_size:384,num_nonlinearity_layers:0/modeling/runs/run-0006/checkpoint-best.pth evaluation_type=classes
+python tdml/evaluate.py configuration_file_name=tdml/configurations/cub/cub_e.yaml model_uri=ViTS,embedding_size:384,num_nonlinearity_layers:0/modeling/runs/run-0007/checkpoint-best.pth evaluation_type=classes
+
+
+# CARS
+python tdml/train.py configuration_file_name=tdml/configurations/cars/cars_se_rkd_ns_vits.yaml
+python tdml/train.py configuration_file_name=tdml/configurations/cars/cars_se_stmr_ns_vits.yaml
+
+python tdml/evaluate.py configuration_file_name=tdml/configurations/cars/cars_e.yaml model_uri=ViTS,embedding_size:384,num_nonlinearity_layers:0/modeling/runs/run-0026/checkpoint-best.pth evaluation_type=classes
+python tdml/evaluate.py configuration_file_name=tdml/configurations/cars/cars_e.yaml model_uri=ViTS,embedding_size:384,num_nonlinearity_layers:0/modeling/runs/run-0027/checkpoint-best.pth evaluation_type=classes
+
+
+# SOP
+python tdml/train.py configuration_file_name=tdml/configurations/sop/sop_se_rkd_ns_vits.yaml
+python tdml/train.py configuration_file_name=tdml/configurations/sop/sop_se_stmr_ns_vits.yaml
+
+python tdml/evaluate.py configuration_file_name=tdml/configurations/sop/sop_e.yaml model_uri=ViTS,embedding_size:384,num_nonlinearity_layers:0/modeling/runs/run-0046/checkpoint-best.pth evaluation_type=classes
+python tdml/evaluate.py configuration_file_name=tdml/configurations/sop/sop_e.yaml model_uri=ViTS,embedding_size:384,num_nonlinearity_layers:0/modeling/runs/run-0047/checkpoint-best.pth evaluation_type=classes
+
+
+
+
+4) debugging
+tensorboard --logdir_spec=p_ste:modeling/runs/run-0111,p_trip:modeling/runs/run-0116 --load_fast=false

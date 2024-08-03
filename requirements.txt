@@ -1,0 +1,15 @@
+ditdml
+faiss-gpu==1.7.1.post3
+more-itertools
+numpy==1.19.5
+omegaconf==2.3.0
+pillow
+pretrainedmodels==0.7.4
+scipy==1.6.1
+scikit-learn
+torch==1.13.0
+torchvision==0.14.0
+tensorflow==2.5.3
+tensorboard==2.11.2
+timm==0.5.4
+tqdm
