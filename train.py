@@ -46,10 +46,7 @@ def train(data_loaders_by_subset, model, loss_computer, metric_computer, optimiz
         data_iterator = tqdm(data_loaders_by_subset["training"], desc=description.format(loss=0.0))
 
         # Do a gradient descent step for each batch.
-        # for instances, labels, indexes in data_iterator:
-        import itertools
-
-        for instances, labels, indexes in itertools.islice(data_iterator, 10):
+        for instances, labels, indexes in data_iterator:
             instances, labels = instances.to(device), labels.to(device)
             model_outputs = model(x=instances)
 
@@ -75,10 +72,7 @@ def train(data_loaders_by_subset, model, loss_computer, metric_computer, optimiz
             data_iterator = tqdm(data_loaders_by_subset["validation"], desc="validation steps")
 
             # Do inference for each batch.
-            # for instances, labels, indexes in data_iterator:
-            import itertools
-
-            for instances, labels, indexes in itertools.islice(data_iterator, 10):
+            for instances, labels, indexes in data_iterator:
                 instances, labels = instances.to(device), labels.to(device)
                 model_outputs = model(x=instances)
 
@@ -155,8 +149,7 @@ def train(data_loaders_by_subset, model, loss_computer, metric_computer, optimiz
     validation_writer = SummaryWriter(os.path.join(model_directory_name, "validation"))
 
     # Train for the specified number of epochs.
-    # for epoch in range(args.optimization.num_training_epochs):
-    for epoch in range(2):
+    for epoch in range(args.optimization.num_training_epochs):
         # Print progress information and start timer.
         print("===\nepoch {}".format(epoch + 1))
         start_time = time.time()
