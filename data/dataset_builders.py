@@ -8,7 +8,7 @@ from torch.utils.data import DataLoader
 from tdml.data.dataset_builder import DatasetBuilder, ImageDatasetBuilder, IndexDatasetBuilder
 from tdml.data.datasets import ImageClassDataset, ImageEmbeddingDataset, IndexDataset
 from tdml.data.readers import CubDataReader, CarsDataReader, SopDataReader, IHSJCReader, ThingsReader, YummlyReader
-from tdml.data.samplers import TripletSampler
+from tdml.data.samplers import TripletSampler, SamplePerClassSampler
 
 
 NUM_WORKERS = 8
@@ -127,8 +127,9 @@ class SupervisionEmbeddingClassesDatasetBuilder(ImageDatasetBuilder):
     def __init__(self, args):
         super().__init__(args)
 
-        # Copy batch size.
+        # Copy batch size and number of neighbors per instance.
         self.batch_size = args.batch_size
+        self.num_neighbors_per_instance = args.num_neighbors_per_instance
 
         # Initialize additional supervision embeddings to invalid.
         self.all_supervision_embeddings = None
@@ -155,10 +156,21 @@ class SupervisionEmbeddingClassesDatasetBuilder(ImageDatasetBuilder):
         validation_subset = self._make_dataset(self.records_by_subset["test"], preprocessing, False)
         test_subset = self._make_dataset(self.records_by_subset["test"], preprocessing, False)
 
-        # Make data loaders.
-        training_loader = DataLoader(training_subset, batch_size=self.batch_size, shuffle=True, num_workers=NUM_WORKERS)
-        validation_loader = DataLoader(validation_subset, batch_size=self.batch_size, num_workers=NUM_WORKERS)
-        test_loader = DataLoader(test_subset, batch_size=self.batch_size, num_workers=NUM_WORKERS)
+        # Make PyTorch samplers that produce batches by randomly sampling a fixed number of samples per class.
+        training_sampler = SamplePerClassSampler(
+            self.records_by_subset["training"], self.batch_size, self.num_neighbors_per_instance + 1, True
+        )
+        validation_sampler = SamplePerClassSampler(
+            self.records_by_subset["test"], self.batch_size, self.num_neighbors_per_instance + 1, False
+        )
+        test_sampler = SamplePerClassSampler(
+            self.records_by_subset["test"], self.batch_size, self.num_neighbors_per_instance + 1, False
+        )
+
+        # Make PyTorch data loaders.
+        training_loader = DataLoader(training_subset, batch_sampler=training_sampler, num_workers=NUM_WORKERS)
+        validation_loader = DataLoader(validation_subset, batch_sampler=validation_sampler, num_workers=NUM_WORKERS)
+        test_loader = DataLoader(test_subset, batch_sampler=test_sampler, num_workers=NUM_WORKERS)
 
         return self._make_loader_dict(training_loader, validation_loader, test_loader)
 
